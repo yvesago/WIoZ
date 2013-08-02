@@ -1,0 +1,4 @@
+*.swp
+*.*~
+App-WIoZ-*
+.build
