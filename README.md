@@ -12,20 +12,22 @@ App::WIoZ is based on `Wordle` strategy and `yawc` perl clone.
 
 Usage:
 
-  my $File = 'words.txt';
 
-  my $wioz = App::WIoZ->new(
-    font_min => 18, font_max => 64,
-    filename => "testoutput",
-    basecolor => '226666'); # violet
+    my $File = 'words.txt';
+     
+    my $wioz = App::WIoZ->new(
+      font_min => 18, font_max => 64,
+      filename => "testoutput",
+      basecolor => '226666'); # violet
+     
+    if (-f $File) {
+      my @words = $wioz->read_words($File);
+      $wioz->do_layout(@words);
+    }
+    else {
+      $wioz->update_colors('testoutput.sl.txt');
+    }
 
-  if (-f $File) {
-    my @words = $wioz->read_words($File);
-    $wioz->do_layout(@words);
-  }
-  else {
-    $wioz->update_colors('testoutput.sl.txt');
-  }
 
 watch `doc/freq.pl` to create a `words.txt` file.
 
