@@ -1,100 +1,110 @@
-NAME - App::WIoZ
-    App::WIoZ - a perl word cloud generator
+# NAME - App::WIoZ
 
-DESCRIPTION
-    App::WIoZ can create a SVG or PNG image of a word cloud from a simple
-    text file with "word;weight".
+App::WIoZ - a perl word cloud generator
 
-    App::WIoZ is an acronym for "Words for Io by Zeus", look for the
-    Corregio painting to watch the cloud.
+# DESCRIPTION
 
-    App::WIoZ is based on "Wordle" strategy and "yawc" perl clone.
+App::WIoZ can create a SVG or PNG image of a word cloud from a simple text file with `word;weight`.
 
-    Usage:
+App::WIoZ is an acronym for "Words for Io by Zeus", look for the Corregio painting to watch the cloud. 
 
-      my $File = 'words.txt';
+App::WIoZ is based on `Wordle` strategy and `yawc` perl clone.
 
-      my $wioz = App::WIoZ->new(
-        font_min => 18, font_max => 64,
-        filename => "testoutput",
-        basecolor => '226666'); # violet
+Usage:
 
-      if (-f $File) {
-        my @words = $wioz->read_words($File);
-        $wioz->do_layout(@words);
-      }
-      else {
-        $wioz->update_colors('testoutput.sl.txt');
-      }
+  my $File = 'words.txt';
 
-    watch "doc/freq.pl" to create a "words.txt" file.
+  my $wioz = App::WIoZ->new(
+    font_min => 18, font_max => 64,
+    filename => "testoutput",
+    basecolor => '226666'); # violet
 
-STATUS
-    App::WIoZ is actually a POC to play with Moose, Cairo or
-    Math::PlanePath.
+  if (-f $File) {
+    my @words = $wioz->read_words($File);
+    $wioz->do_layout(@words);
+  }
+  else {
+    $wioz->update_colors('testoutput.sl.txt');
+  }
 
-    The use of an Hilbert curve to manage free space is for playing with
-    Math::PlanePath modules.
+watch `doc/freq.pl` to create a `words.txt` file.
 
-    Performance can be improved in free space matching, or in spiral
-    strategy to find free space.
+# STATUS
 
-    Font choice is still missing. Max and min font sizes can certainly be
-    computed.
+App::WIoZ is actually a POC to play with Moose, Cairo or Math::PlanePath. 
 
-    Feel free to clone this project on GitHub.
+The use of an Hilbert curve to manage free space is for playing with Math::PlanePath modules.
 
-SETTINGS
-  height
-    image height, default to 600
+Performance can be improved in free space matching, or in spiral strategy to find free space.
 
-  width
-    image width, default to 800
+Font choice is still missing. Max and min font sizes can certainly be computed. 
 
-  font_min, font_max
-    required min and max font size
+Feel free to clone this project on GitHub.
 
-  filename
-    file name output, extension ".png" or ".svg" will be added
+# SETTINGS
 
-  svg
-    produce a svg output, default value
+## height
 
-    set to 0 to write a png
+image height, default to 600
 
-  scale
-    Scale for the Hilbert Curve granularity default to 10
+## width
 
-    Higer value produces better speed but more words recovery.
+image width, default to 800
 
-  basecolor
-    Base color for color theme, default to 882222
+## font_min, font_max
 
-METHODS
-  read_words
-    read words form file : "word;weight"
+required min and max font size
 
-    Usage: my @words = $wioz->read_words($File);
+## filename
 
-  update_colors
-    Read words position from file and update colors.
+file name output, extension `.png` or `.svg` will be added 
 
-    Usage:
+## svg
 
-       $wioz->update_colors("file.sl.txt");
+produce a svg output, default value
 
-  do_layout
-    Compute words position, save result to svg or png image, save in
-    "filename.sl.txt" words positions to update colors.
+set to 0 to write a png
 
-    Usage : $wioz->do_layout(@words);
+## scale
 
-AUTHORS
-    Yves Agostini, "<yveago@cpan.org>"
+Scale for the Hilbert Curve granularity default to 10
 
-LICENSE AND COPYRIGHT
-    Copyright 2013 - Yves Agostini
+Higer value produces better speed but more words recovery.
 
-    This program is free software and may be modified or distributed under
-    the same terms as Perl itself.
+## basecolor
 
+Base color for color theme, default to 882222
+
+# METHODS
+
+## read_words
+
+read words form file : `word;weight`
+
+Usage: 
+ my @words = $wioz->read_words($File);
+
+## update_colors
+
+Read words position from file and update colors.
+
+Usage:
+
+   $wioz->update_colors("file.sl.txt");
+
+## do_layout
+
+Compute words position, save result to svg or png image, save in `filename.sl.txt` words positions to update colors.
+
+Usage :
+   $wioz->do_layout(@words);
+
+# AUTHORS
+
+Yves Agostini, `<yveago@cpan.org>`
+
+# LICENSE AND COPYRIGHT
+
+Copyright 2013 - Yves Agostini 
+
+This program is free software and may be modified or distributed under the same terms as Perl itself.
