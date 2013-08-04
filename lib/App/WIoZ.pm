@@ -3,7 +3,7 @@ use warnings;
 package App::WIoZ;
 
 use vars '$VERSION';
-$VERSION = '0.001';
+$VERSION = '0.002';
 
 #use feature 'say';
 use Moose;

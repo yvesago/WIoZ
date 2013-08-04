@@ -49,7 +49,7 @@ has 'show' => (
 
 has 'angle' => (
     is => 'ro', isa => 'Num',
-    default => sub {return rand(1.0) > 0.85 ? -1 * 2 * atan2(1, 1) : 0;}
+    default => sub {return rand(1.0) > 0.85 ? -1 * 2 * atan2(1, 1) : '0.0';}
 );
 
 sub update_c {
