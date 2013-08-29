@@ -2,9 +2,6 @@ use strict;
 use warnings;
 package App::WIoZ;
 
-use vars '$VERSION';
-$VERSION = '0.003';
-
 #use feature 'say';
 use Moose;
 use Color::Mix;
@@ -24,7 +21,7 @@ App::WIoZ - a perl word cloud generator
 
 App::WIoZ can create a SVG or PNG image of a word cloud from a simple text file with C<word;weight>.
 
-App::WIoZ is an acronym for "Words for Io by Zeus", look for the Corregio painting to watch the cloud. 
+App::WIoZ is an acronym for "Words for Io by Zeus", look for the Correggio painting to watch the cloud.
 
 App::WIoZ is based on C<Wordle> strategy and C<yawc> perl clone.
 
@@ -417,7 +414,9 @@ sub _random_point {
     return ($x, $y);
 }
 
+=head1 Git
 
+L<https://github.com/yvesago/WIoZ/>
 
 =head1 AUTHORS
 

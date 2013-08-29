@@ -6,7 +6,7 @@ App::WIoZ - a perl word cloud generator
 
 App::WIoZ can create a SVG or PNG image of a word cloud from a simple text file with `word;weight`.
 
-App::WIoZ is an acronym for "Words for Io by Zeus", look for the Corregio painting to watch the cloud. 
+App::WIoZ is an acronym for "Words for Io by Zeus", look for the Correggio painting to watch the cloud.
 
 App::WIoZ is based on `Wordle` strategy and `yawc` perl clone.
 
