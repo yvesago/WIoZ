@@ -24,6 +24,7 @@ my $File = $ARGV[0];
 my $wioz = App::WIoZ->new( 
    font_min => 18, font_max => 64,
    filename => "testoutput",
+   #set_font => 'DejaVuSans,normal,bold',
    basecolor => '226666'); # violet
    #basecolor => '084A93'); # bleu
    #basecolor => '29872F'); # vert

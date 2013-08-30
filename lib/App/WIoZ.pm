@@ -31,6 +31,7 @@ Usage:
 
   my $wioz = App::WIoZ->new(
     font_min => 18, font_max => 64,
+    set_font => "DejaVuSans,normal,bold",
     filename => "testoutput",
     basecolor => '226666'); # violet
 
@@ -39,6 +40,7 @@ Usage:
     $wioz->do_layout(@words);
   }
   else {
+    $wioz->chg_font("LiberationSans,normal,bold");
     $wioz->update_colors('testoutput.sl.txt');
   }
 
@@ -99,11 +101,51 @@ has ['font_min','font_max'] => (
     is => 'ro', required => 1, isa => 'Int'
 );
 
-#TODO to set the default font
+=head2 set_font, chg_font, font
 
-#has 'font_desc' => (
-#    is => 'ro', required => 1, isa => 'Int'
-#);
+accessors for font name, type and weight
+
+C<set_font> : set font in new WIoZ object, default is C<'LiberationSans,normal,bold'>
+
+C<chg_font> : change font
+
+C<font> : read font object
+
+Usage :
+
+  $wioz = App::WIoZ->new( font_min => 18, font_max => 64,
+                          set_font => 'DejaVuSans,normal,bold');
+  
+  $fontname = $wioz->font->{font};
+  $wioz->chg_font('LiberationSans,normal,bold');
+
+
+=cut
+
+has 'font' => (
+   isa    => 'HashRef',
+   is => 'ro', lazy => 1,
+   writer => 'chg_font',
+   builder => '_set_font'
+);
+
+# for font builder
+has 'set_font' => ( is => 'rw',isa => 'Str' );
+
+sub _set_font {
+    my ($self,$font) = @_;
+    my ($fname,$ftype,$fweight) = split ',', ($self->set_font || ',,');
+    return ( { font => $fname || 'LiberationSans',
+               type => $ftype || 'normal',
+               weight => $fweight || 'bold' });
+};
+
+# for font change
+around 'chg_font' => sub  {
+        my ($next,$self,$font) = @_;
+        my ($fname,$ftype,$fweight) = split ',', $font;
+        $self->$next( {font => $fname, type => $ftype, weight => $fweight});
+};
 
 has 'backcolor' => (
     is => 'ro', isa => 'Str',
@@ -231,7 +273,7 @@ sub read_words {
             #$all_weight += $n;
             $weight_max = $n if ( $n >$weight_max );
             $weight_min = $n if ( $n <$weight_min );
-            my $w = new App::WIoZ::Word(text => $t, weight => $n);
+            my $w = new App::WIoZ::Word(text => $t, weight => $n, font => $self->font);
             push @res, $w;
         } else {
             warn "error line: $_";
@@ -267,10 +309,18 @@ sub update_colors{
     close $fh;
 
     my @color = Color::Mix->new->analogous($self->basecolor, 12, 12);
+
+    # reset background
+    $self->cr->rectangle (0, 0, $self->width, $self->height);
+    my $po = Graphics::ColorNames->new;
+    my @rgb = $po->rgb($self->backcolor);
+    $self->cr->set_source_rgb ($rgb[0]/255.0, $rgb[1]/255.0, $rgb[2]/255.0);
+    $self->cr->fill;
+
     foreach my $l (@L) {
         my ($show,$text,$size,$x,$y,$angle) = split /\t/,$l;
         #say "$text - $size - $angle";
-        my $w = App::WIoZ::Word->new(text => $text, size => $size, angle => $angle, show => $show, color => $color[int(rand(12))]);
+        my $w = App::WIoZ::Word->new(text => $text, size => $size, angle => $angle, show => $show, color => $color[int(rand(12))], font => $self->font);
         my $newc = App::WIoZ::Point->new( x => $x, y => $y);
         $w->update_size($self,$size);
         $w->update_c($newc);
