@@ -12,22 +12,22 @@ App::WIoZ is based on `Wordle` strategy and `yawc` perl clone.
 
 Usage:
 
-
     my $File = 'words.txt';
-     
+    
     my $wioz = App::WIoZ->new(
       font_min => 18, font_max => 64,
+      set_font => "DejaVuSans,normal,bold",
       filename => "testoutput",
       basecolor => '226666'); # violet
-     
+    
     if (-f $File) {
       my @words = $wioz->read_words($File);
       $wioz->do_layout(@words);
     }
     else {
+      $wioz->chg_font("LiberationSans,normal,bold");
       $wioz->update_colors('testoutput.sl.txt');
     }
-
 
 watch `doc/freq.pl` to create a `words.txt` file.
 
@@ -39,7 +39,7 @@ The use of an Hilbert curve to manage free space is for playing with Math::Plane
 
 Performance can be improved in free space matching, or in spiral strategy to find free space.
 
-Font choice is still missing. Max and min font sizes can certainly be computed. 
+Max and min font sizes can certainly be computed. 
 
 Feel free to clone this project on GitHub.
 
@@ -56,6 +56,27 @@ image width, default to 800
 ## font_min, font_max
 
 required min and max font size
+
+## set_font, chg_font, font
+
+accessors for font name, type and weight
+
+`set_font` : set font in new WIoZ object, default is `'LiberationSans,normal,bold'`
+
+`chg_font` : change font
+
+`font` : read font object
+
+Usage :
+
+    $wioz = App::WIoZ->new( font_min => 18, font_max => 64,
+                            set_font => 'DejaVuSans,normal,bold');
+        
+    
+    $fontname = $wioz->font->{font};
+    $wioz->chg_font('LiberationSans,normal,bold');
+    
+
 
 ## filename
 
@@ -92,7 +113,7 @@ Read words position from file and update colors.
 
 Usage:
 
-   $wioz->update_colors("file.sl.txt");
+    $wioz->update_colors("file.sl.txt");
 
 ## do_layout
 
@@ -100,6 +121,10 @@ Compute words position, save result to svg or png image, save in `filename.sl.tx
 
 Usage :
    $wioz->do_layout(@words);
+
+# Git
+
+[https://github.com/yvesago/WIoZ/](https://github.com/yvesago/WIoZ/)
 
 # AUTHORS
 

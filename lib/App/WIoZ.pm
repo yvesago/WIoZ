@@ -54,7 +54,7 @@ The use of an Hilbert curve to manage free space is for playing with Math::Plane
 
 Performance can be improved in free space matching, or in spiral strategy to find free space.
 
-Font choice is still missing. Max and min font sizes can certainly be computed. 
+Max and min font sizes can certainly be computed. 
 
 Feel free to clone this project on GitHub.
 
