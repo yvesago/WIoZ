@@ -280,20 +280,38 @@ sub _getlines_from {
 
 sub read_words {
     my ($self, $filename) = @_;
-    my ($weight_min, $weight_max) = (1000000000, 0);
-    my @res = ();
+    my $hash = {};
     foreach my $l (_getlines_from($filename)) {
         my ($t,$n) = split /;/,$l;
         if ( $t && $n ) {
             $t =~ s/\s*$//g; $n =~ s/\s*$//g;
-            #$all_weight += $n;
-            $weight_max = $n if ( $n >$weight_max );
-            $weight_min = $n if ( $n <$weight_min );
-            my $w = new App::WIoZ::Word(text => $t, weight => $n, font => $self->font);
-            push @res, $w;
+            warn "duplicated: $t" if exists $hash->{$t};
+            $hash->{$t} = $n;
         } else {
             warn "error line: $_";
         }
+    }
+    return $self->from_hash($hash);
+}
+
+
+=head2 from_hash
+
+Usage:
+ my @words = $wioz->from_hash({ word=>weight, ...});
+
+=cut
+
+sub from_hash {
+    my ($self, $hash) = @_;
+    my ($weight_min, $weight_max) = (1000000000, 0);
+    my @res = ();
+    while (my ($t, $n) = each %{$hash}) {
+        #$all_weight += $n;
+        $weight_max = $n if ( $n >$weight_max );
+        $weight_min = $n if ( $n <$weight_min );
+        my $w = new App::WIoZ::Word(text => $t, weight => $n, font => $self->font);
+        push @res, $w;
     }
     # set initial size and color
     my @color = Color::Mix->new->analogous($self->basecolor, 12, 12);
