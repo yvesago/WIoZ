@@ -256,13 +256,25 @@ read words form file : C<word;weight>
 Usage: 
  my @words = $wioz->read_words($File);
 
+where $File could be a filename, a filehandle or an IO::Handle
+
 =cut
 
 sub _getlines_from {
-    my ($filename) = @_;
-    open my $fh, '<:utf8', $filename or die $filename . ' : ' .$!;
-    my @L = <$fh>;
-    close $fh;
+    my ($file) = @_;
+    my @L;
+    if (ref \$file eq 'SCALAR') {
+        open my $fh, '<:utf8', $file or die $file . ' : ' .$!;
+        @L = <$fh>;
+        close $fh;
+    }
+    elsif (ref \$file eq 'GLOB') {
+        @L = <$file>;
+    }
+    else {
+        # something like an IO::Handle
+        @L = $file->getlines;
+    }
     return @L;
 }
 
