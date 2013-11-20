@@ -258,15 +258,19 @@ Usage:
 
 =cut
 
+sub _getlines_from {
+    my ($filename) = @_;
+    open my $fh, '<:utf8', $filename or die $filename . ' : ' .$!;
+    my @L = <$fh>;
+    close $fh;
+    return @L;
+}
+
 sub read_words {
     my ($self, $filename) = @_;
     my ($weight_min, $weight_max) = (1000000000, 0);
     my @res = ();
-    my $fh;
-    open $fh, '<:utf8', $filename;
-    my @L = <$fh>;
-    close $fh;
-    foreach my $l (@L) {
+    foreach my $l (_getlines_from($filename)) {
         my ($t,$n) = split /;/,$l;
         if ( $t && $n ) {
             $t =~ s/\s*$//g; $n =~ s/\s*$//g;
@@ -304,10 +308,6 @@ Usage:
 sub update_colors{
     my ($self, $filename) = @_;
 
-    open my $fh, '<:utf8', $filename or die $filename . ' : ' .$!;
-    my @L = <$fh>;
-    close $fh;
-
     my @color = Color::Mix->new->analogous($self->basecolor, 12, 12);
 
     # reset background
@@ -317,7 +317,7 @@ sub update_colors{
     $self->cr->set_source_rgb ($rgb[0]/255.0, $rgb[1]/255.0, $rgb[2]/255.0);
     $self->cr->fill;
 
-    foreach my $l (@L) {
+    foreach my $l (_getlines_from($filename)) {
         my ($show,$text,$size,$x,$y,$angle) = split /\t/,$l;
         #say "$text - $size - $angle";
         my $w = App::WIoZ::Word->new(text => $text, size => $size, angle => $angle, show => $show, color => $color[int(rand(12))], font => $self->font);
