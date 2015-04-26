@@ -2,6 +2,10 @@
 
 App::WIoZ - a perl word cloud generator
 
+
+[![Build Status](https://travis-ci.org/yvesago/WIoZ.svg)](https://travis-ci.org/yvesago/WIoZ)
+
+
 # DESCRIPTION
 
 App::WIoZ can create a SVG or PNG image of a word cloud from a simple text file with `word;weight`.
@@ -132,6 +136,6 @@ Yves Agostini, `<yveago@cpan.org>`
 
 # LICENSE AND COPYRIGHT
 
-Copyright 2013 - Yves Agostini 
+Copyright 2015 - Yves Agostini 
 
 This program is free software and may be modified or distributed under the same terms as Perl itself.
